@@ -1,15 +1,12 @@
 package com.gallery.controller;
-import java.util.Base64;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-
 
 import com.gallery.entity.Details;
 import com.gallery.entity.Gallery;
@@ -17,39 +14,13 @@ import com.gallery.service.GalleryService;
 
 @Controller
 public class GalleryController {
-	@Autowired	
+	@Autowired
 	GalleryService galleryService;
-	
 
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
 		model.addAttribute("listGallery", galleryService.getAllGallery());
-	
-	    List<Details> detailsList = galleryService.getAllDetails();
-
-	    
-		
-		for (Details detail : detailsList) {
-            if (detail.getThumb() != null) { // Assuming `thumb` is the byte[] field
-                String encodedImage = Base64.getEncoder().encodeToString(detail.getThumb());
-                detail.setThumbBase64(encodedImage);
-                System.out.println("Base64 Encoded Image: " + encodedImage);
-            } else {
-                detail.setThumbBase64(""); 
-            }
-        }
-		
-		
-		
-
-	    model.addAttribute("listDetails", detailsList);
-		
-		
-		
-		
-		
 		return "index";
-		
 	}
 
 	@GetMapping("/new")
@@ -91,7 +62,7 @@ public class GalleryController {
 		return "details";
 	}
 
-
+ 
 	
 	@PostMapping("/saveDetails")
 	public String saveDetails(@ModelAttribute("details") Details details, Model model) {
@@ -105,14 +76,21 @@ public class GalleryController {
 	    model.addAttribute("artist", savedDetails);
 
 	   
-	    return "redirect:/";
-
+	    return "index";
 	}
+
 	
 	
+	
+	
+	
+	
+	
+ 
+        
 
 	
 	
 
-	
-}
+
+}  
